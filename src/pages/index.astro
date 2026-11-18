@@ -1,0 +1,96 @@
+---
+import { getPosts } from '../posts';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const posts = getPosts();
+const categories = [...new Set(posts.map((p) => p.category))];
+const fmtDate = (d: string) => d.replaceAll('-', '.');
+---
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>naedevlog</title>
+  <meta name="description" content="AI 인프라를 배우고, 정리하고, 직접 재 본 기록." />
+  <link rel="stylesheet" href={`${base}assets/naedevlog.css`} />
+  <style>
+    .intro { padding: 24px 0 48px; }
+    .intro h1 { font-size: clamp(30px, 4.4vw, 40px); margin-bottom: 12px; }
+    .intro p { color: var(--sub); font-size: 18px; margin: 0; }
+
+    .cats { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+    .cat { cursor: pointer; border: 0; background: var(--surface-2); color: var(--sub); font: 600 13px var(--font);
+      padding: 6px 12px; border-radius: 99px; }
+    .cat[aria-pressed="true"] { background: var(--text); color: #fff; }
+
+    .list { list-style: none; padding: 0; margin: 0; }
+    .list li { margin: 0; border-bottom: 1px solid var(--line); }
+    .list a { display: block; padding: 28px 0; color: var(--text); }
+    .list a:hover { text-decoration: none; }
+    .list a:hover .t { color: var(--blue); }
+    .c { font-size: 14px; font-weight: 700; color: var(--blue); }
+    .t { font-size: 21px; font-weight: 700; letter-spacing: -.02em; line-height: 1.45; margin: 4px 0 8px; transition: color .15s; }
+    .d { color: var(--sub); font-size: 15.5px; line-height: 1.65; margin: 0 0 12px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .m { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 14px; color: var(--faint); }
+    .m .tag { font-size: 12px; padding: 1px 8px; }
+    .empty { color: var(--faint); padding: 48px 0; text-align: center; }
+    [hidden] { display: none !important; }
+    @media (max-width: 600px) { .t { font-size: 19px; } .list a { padding: 22px 0; } }
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="inner">
+    <a class="logo" href={base}>naedevlog</a>
+    <nav class="nav"><a href={base}>전체 글</a></nav>
+  </div></header>
+
+  <main class="wrap">
+    <section class="intro">
+      <h1>배우고, 정리하고, 직접 재 본다</h1>
+      <p>AI 인프라 엔지니어의 학습 기록.</p>
+    </section>
+
+    {categories.length > 1 && (
+      <div class="cats">
+        <button class="cat" data-cat="all" aria-pressed="true">모든 주제</button>
+        {categories.map((c) => <button class="cat" data-cat={c} aria-pressed="false">{c}</button>)}
+      </div>
+    )}
+
+    <ul class="list">
+      {posts.map((p) => (
+        <li data-cat={p.category}>
+          <a href={`${base}posts/${p.slug}/`}>
+            <div class="c">{p.category}</div>
+            <div class="t">{p.title}</div>
+            {p.description && <p class="d">{p.description}</p>}
+            <div class="m">
+              <span>{fmtDate(p.date)}</span>
+              {p.tags.map((t) => <span class="tag">{t}</span>)}
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="empty" hidden>아직 글이 없다.</p>
+  </main>
+  <footer class="site-footer">naedevlog · AI 인프라 학습 기록</footer>
+
+  <script>
+    let cat = 'all';
+    const apply = () => {
+      let n = 0;
+      document.querySelectorAll<HTMLElement>('.list li').forEach((li) => {
+        const show = cat === 'all' || li.dataset.cat === cat;
+        li.hidden = !show; if (show) n++;
+      });
+      document.querySelector<HTMLElement>('.empty')!.hidden = n > 0;
+    };
+    document.querySelectorAll<HTMLButtonElement>('.cat').forEach((b, _, all) => b.addEventListener('click', () => {
+      all.forEach((x) => x.setAttribute('aria-pressed', String(x === b))); cat = b.dataset.cat!; apply();
+    }));
+    apply();
+  </script>
+</body>
+</html>

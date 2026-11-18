@@ -1,0 +1,134 @@
+/* naedevlog design system
+   흰 배경, 검정 본문, 포인트 색은 파랑 하나. 주의 표시만 주황을 쓴다. */
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
+:root {
+  --bg: #ffffff;
+  --surface: #f9fafb;     /* 그림, 표 머리, 코드 */
+  --surface-2: #f2f4f6;
+  --line: #e5e8eb;
+  --line-strong: #d1d6db;
+  --text: #191f28;
+  --sub: #4e5968;
+  --faint: #8b95a1;
+  --blue: #3182f6;        /* 유일한 포인트 색 */
+  --blue-light: #90c2ff;
+  --blue-soft: #e8f3ff;
+  --gray-bar: #b0b8c1;
+  --warn: #d9730d;
+  --warn-soft: #fff6ea;
+
+  --font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --wrap: 720px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: var(--font); font-size: 17px; line-height: 1.8;
+  word-break: keep-all; overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- 헤더 ---------- */
+.site-header { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.92);
+  backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--line); }
+.site-header .inner { max-width: 1040px; margin: 0 auto; padding: 0 24px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between; }
+.logo { font-weight: 800; font-size: 19px; color: var(--text); letter-spacing: -.02em; }
+.logo:hover { text-decoration: none; }
+.nav { display: flex; gap: 24px; font-size: 15px; font-weight: 600; }
+.nav a { color: var(--sub); }
+.nav a:hover { color: var(--text); text-decoration: none; }
+
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 64px 24px 120px; }
+.wrap.wide { max-width: 1040px; }
+
+/* ---------- 글 머리 ---------- */
+.category { font-size: 15px; font-weight: 700; color: var(--blue); margin-bottom: 12px; }
+h1 { font-size: clamp(30px, 4.6vw, 40px); line-height: 1.35; font-weight: 800; letter-spacing: -.03em; margin: 0 0 16px; }
+.lead { font-size: 19px; color: var(--sub); line-height: 1.7; margin: 0 0 20px; }
+.post-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 14px; color: var(--faint);
+  padding-bottom: 32px; margin-bottom: 40px; border-bottom: 1px solid var(--line); }
+.post-meta .dot::before { content: '·'; }
+
+.tag { display: inline-block; padding: 3px 10px; border-radius: 6px; background: var(--surface-2);
+  font-size: 13px; font-weight: 600; color: var(--sub); line-height: 1.6; }
+.tag.type { background: var(--blue-soft); color: var(--blue); }
+
+/* ---------- 본문 ---------- */
+h2 { font-size: 26px; line-height: 1.4; font-weight: 800; letter-spacing: -.02em; margin: 72px 0 20px; }
+h3 { font-size: 20px; line-height: 1.45; font-weight: 700; letter-spacing: -.01em; margin: 44px 0 12px; }
+p { margin: 0 0 20px; }
+.hl { color: var(--blue); font-weight: 700; }
+.warn { color: var(--warn); font-weight: 700; }
+ul, ol { padding-left: 22px; margin: 0 0 20px; }
+li { margin: 6px 0; }
+
+code { font-family: var(--mono); font-size: .86em; background: var(--surface-2); border-radius: 5px; padding: 2px 6px; color: var(--text); }
+pre { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; overflow-x: auto;
+  font: 14px/1.7 var(--mono); margin: 0 0 24px; }
+pre code { background: none; padding: 0; font-size: inherit; }
+
+/* 정의 목록형 박스: 용어 + 설명 */
+.def { border-left: 3px solid var(--line-strong); padding: 2px 0 2px 18px; margin: 0 0 18px; }
+.def b { display: block; font-size: 16px; margin-bottom: 2px; }
+.def p { margin: 0; color: var(--sub); }
+
+/* 콜아웃 */
+.callout { background: var(--surface); border-radius: 12px; padding: 18px 22px; margin: 28px 0; }
+.callout .label { display: block; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.callout p { color: var(--sub); }
+.callout > :last-child { margin-bottom: 0; }
+.callout.warn-box { background: var(--warn-soft); }
+.callout.warn-box .label { color: var(--warn); }
+.callout.info .label { color: var(--blue); }
+
+/* 공식 */
+.formula { background: var(--blue-soft); border-radius: 12px; padding: 20px 24px; margin: 24px 0;
+  font: 600 16px/1.7 var(--mono); color: var(--text); text-align: center; overflow-x: auto; }
+.formula small { display: block; font: 400 14px/1.6 var(--font); color: var(--sub); margin-top: 6px; }
+
+/* 표 */
+.table-wrap { overflow-x: auto; margin: 0 0 24px; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 13px; font-weight: 600; color: var(--faint); border-bottom: 1px solid var(--line-strong); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* 그림 */
+.figure { background: var(--surface); border-radius: 16px; padding: 28px; margin: 28px 0 32px; }
+.figure svg { display: block; width: 100%; height: auto; }
+.figure figcaption, .caption { color: var(--faint); font-size: 14px; text-align: center; margin-top: 14px; }
+
+/* 요약 */
+.summary { background: var(--surface); border-radius: 16px; padding: 24px 28px 8px; margin: 24px 0; }
+.summary li { margin: 8px 0; }
+
+/* 글 끝 */
+.post-foot { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); }
+.post-foot .next-label { font-size: 14px; font-weight: 700; color: var(--faint); margin-bottom: 10px; }
+.post-foot ul { list-style: none; padding: 0; }
+.post-foot li { padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--sub); margin: 0; }
+.site-footer { text-align: center; font-size: 13px; color: var(--faint); padding: 40px 24px 56px; }
+
+/* 폼 */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; font-weight: 600; color: var(--sub); }
+input, select { background: var(--bg); color: var(--text); border: 1px solid var(--line-strong); border-radius: 8px;
+  padding: 9px 12px; font: 15px/1.3 var(--font); width: 100%; }
+input:focus, select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .wrap { padding: 40px 20px 88px; }
+  .nav { gap: 16px; }
+  h2 { font-size: 23px; margin-top: 56px; }
+  .lead { font-size: 17px; }
+  .figure { padding: 18px; border-radius: 12px; }
+}
