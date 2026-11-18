@@ -1,5 +1,6 @@
-/* naedevlog design system
-   흰 배경, 검정 본문, 포인트 색은 파랑 하나. 주의 표시만 주황을 쓴다. */
+/* naelog design system
+   흰 배경, 검정 본문, 포인트 색은 파랑 하나. 주의 표시만 주황을 쓴다.
+   다크 모드는 같은 변수의 어두운 값이다. site.js가 <html data-theme>을 light/dark로 정한다. */
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 
@@ -22,7 +23,43 @@
   --font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --wrap: 720px;
+  --header-bg: rgba(255,255,255,.92);
+  color-scheme: light;
 }
+
+:root[data-theme="dark"] {
+  --bg: #17171c;
+  --surface: #1f1f25;
+  --surface-2: #2a2a31;
+  --line: #2c2c34;
+  --line-strong: #3d3d46;
+  --text: #e8e8ea;
+  --sub: #b1b1b9;
+  --faint: #7e7e88;
+  --blue: #4b96fa;
+  --blue-light: #2f5f9e;
+  --blue-soft: #1b2a40;
+  --gray-bar: #55555f;
+  --warn: #f08d32;
+  --warn-soft: #33251a;
+  --header-bg: rgba(23,23,28,.92);
+  color-scheme: dark;
+}
+
+/* 글 안 SVG는 템플릿 팔레트 hex로 칠한다. 다크에서는 같은 역할의 변수로 바꿔 칠한다 */
+:root[data-theme="dark"] .figure svg [fill="#fff"] { fill: var(--bg); }
+:root[data-theme="dark"] .figure svg [fill="#f2f4f6"] { fill: var(--surface-2); }
+:root[data-theme="dark"] .figure svg [fill="#191f28"] { fill: var(--text); }
+:root[data-theme="dark"] .figure svg [fill="#4e5968"] { fill: var(--sub); }
+:root[data-theme="dark"] .figure svg [fill="#8b95a1"] { fill: var(--faint); }
+:root[data-theme="dark"] .figure svg [fill="#b0b8c1"] { fill: var(--gray-bar); }
+:root[data-theme="dark"] .figure svg [fill="#3182f6"] { fill: var(--blue); }
+:root[data-theme="dark"] .figure svg [fill="#90c2ff"] { fill: var(--blue-light); }
+:root[data-theme="dark"] .figure svg [stroke="#e5e8eb"] { stroke: var(--line-strong); }
+:root[data-theme="dark"] .figure svg [stroke="#d1d6db"] { stroke: var(--line-strong); }
+:root[data-theme="dark"] .figure svg [stroke="#b0b8c1"] { stroke: var(--gray-bar); }
+/* 파랑 위의 흰 글씨는 다크에서도 흰색으로 둔다 */
+:root[data-theme="dark"] .figure svg text[fill="#fff"] { fill: #fff; }
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -36,7 +73,7 @@ a { color: var(--blue); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ---------- 헤더 ---------- */
-.site-header { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.92);
+.site-header { position: sticky; top: 0; z-index: 10; background: var(--header-bg);
   backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--line); }
 .site-header .inner { max-width: 1040px; margin: 0 auto; padding: 0 24px; height: 60px;
   display: flex; align-items: center; justify-content: space-between; }
@@ -45,6 +82,12 @@ a:hover { text-decoration: underline; }
 .nav { display: flex; gap: 24px; font-size: 15px; font-weight: 600; }
 .nav a { color: var(--sub); }
 .nav a:hover { color: var(--text); text-decoration: none; }
+.nav a[aria-current="page"] { color: var(--text); }
+.nav-tools { display: flex; align-items: center; gap: 4px; margin-left: 8px; padding-left: 12px; border-left: 1px solid var(--line); }
+.nav-tools a, .nav-tools button { display: inline-flex; align-items: center; justify-content: center; height: 32px; min-width: 32px;
+  padding: 0 6px; border: 0; border-radius: 8px; background: none; color: var(--sub); font: 600 13px var(--font); cursor: pointer; }
+.nav-tools a:hover, .nav-tools button:hover { background: var(--surface-2); color: var(--text); text-decoration: none; }
+.nav-tools svg { width: 18px; height: 18px; }
 
 .wrap { max-width: var(--wrap); margin: 0 auto; padding: 64px 24px 120px; }
 .wrap.wide { max-width: 1040px; }
@@ -111,6 +154,20 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .summary li { margin: 8px 0; }
 
 /* 글 끝 */
+/* book: 인용문. 구분은 1px 선으로만 한다 */
+.quotes { margin: 8px 0 32px; }
+.quote { margin: 0; padding: 28px 0; font-size: 18px; line-height: 1.9; color: var(--text); }
+.quote + .quote { border-top: 1px solid var(--line); }
+.quote cite { display: block; margin-top: 10px; font-size: 14px; font-style: normal; color: var(--faint); }
+
+/* scrap: 원문 링크 카드 */
+.source { display: block; border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; margin: 8px 0 32px; color: var(--text); }
+.source:hover { text-decoration: none; border-color: var(--line-strong); }
+.source:hover .source-title { color: var(--blue); }
+.source-title { display: block; font-size: 17px; font-weight: 700; line-height: 1.5; transition: color .15s; }
+.source-by { display: block; margin-top: 4px; font-size: 14px; color: var(--sub); }
+.source-url { display: block; margin-top: 8px; font-size: 13px; color: var(--faint); overflow-wrap: anywhere; }
+
 .post-foot { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); }
 .post-foot .next-label { font-size: 14px; font-weight: 700; color: var(--faint); margin-bottom: 10px; }
 .post-foot ul { list-style: none; padding: 0; }
@@ -127,7 +184,8 @@ input:focus, select:focus { outline: none; border-color: var(--blue); box-shadow
 @media (max-width: 600px) {
   body { font-size: 16px; }
   .wrap { padding: 40px 20px 88px; }
-  .nav { gap: 16px; }
+  .site-header .inner { padding: 0 16px; }
+  .nav { gap: 12px; font-size: 14px; }
   h2 { font-size: 23px; margin-top: 56px; }
   .lead { font-size: 17px; }
   .figure { padding: 18px; border-radius: 12px; }

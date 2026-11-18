@@ -3,19 +3,26 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{제목}} · naedevlog</title>
+  <title>{{제목}} · naelog</title>
   <meta name="description" content="{{한 줄 요약}}" />
   <!-- 홈 목록에 쓰이는 정보 -->
+  <meta name="post:log" content="dev" />
   <meta name="post:date" content="{{YYYY-MM-DD}}" />
   <meta name="post:category" content="{{주제, 예: GPU와 추론}}" />
   <meta name="post:tags" content="{{태그1, 태그2}}" />
   <!-- <meta name="post:draft" content="true" />  홈에서 숨기려면 주석 해제 -->
   <link rel="stylesheet" href="../../assets/naedevlog.css" />
+  <!-- 영어판이 있으면: <link rel="alternate" hreflang="en" href="../../en/posts/{{slug}}/" /> -->
+  <script src="../../assets/site.js"></script>
 </head>
 <body>
   <header class="site-header"><div class="inner">
-    <a class="logo" href="../../">naedevlog</a>
-    <nav class="nav"><a href="../../">전체 글</a></nav>
+    <a class="logo" href="../../">naelog</a>
+    <nav class="nav">
+      <a href="../../dev/" aria-current="page">dev</a>
+      <a href="../../book/">book</a>
+      <a href="../../scrap/">scrap</a>
+    </nav>
   </div></header>
 
   <main class="wrap">
@@ -62,13 +69,8 @@
 
     <h2>정리</h2>
     <div class="summary"><ul><li>핵심 1</li></ul></div>
-
-    <div class="post-foot">
-      <div class="next-label">다음 글</div>
-      <ul><li>제목</li></ul>
-    </div>
   </main>
-  <footer class="site-footer">naedevlog · AI 인프라 학습 기록</footer>
+  <footer class="site-footer">naelog · dev</footer>
   <script src="../../assets/edit.js"></script>
 </body>
 </html>

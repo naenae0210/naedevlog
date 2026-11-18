@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{책 제목}} · naelog</title>
+  <meta name="description" content="{{저자}}, 『{{책 제목}}』에서 옮겨 둔 문장." />
+  <!-- 홈 목록에 쓰이는 정보 -->
+  <meta name="post:log" content="book" />
+  <meta name="post:date" content="{{YYYY-MM-DD}}" />
+  <meta name="post:category" content="{{저자}}" />
+  <meta name="post:tags" content="{{장르}}" />
+  <!-- <meta name="post:draft" content="true" />  홈에서 숨기려면 주석 해제 -->
+  <link rel="stylesheet" href="../../assets/naedevlog.css" />
+  <meta name="naelog:translate" content="google" />
+  <script src="../../assets/site.js"></script>
+</head>
+<body>
+  <header class="site-header"><div class="inner">
+    <a class="logo" href="../../">naelog</a>
+    <nav class="nav">
+      <a href="../../dev/">dev</a>
+      <a href="../../book/" aria-current="page">book</a>
+      <a href="../../scrap/">scrap</a>
+    </nav>
+  </div></header>
+
+  <main class="wrap">
+    <div class="category">{{저자}}</div>
+    <h1>{{책 제목}}</h1>
+    <p class="lead">{{저자}}, 『{{책 제목}}』({{원제}})</p>
+    <div class="post-meta">
+      <span>{{YYYY.MM.DD}}</span>
+      <span class="tag">{{장르}}</span>
+    </div>
+
+    <div class="quotes">
+      <!-- 인용 하나 = blockquote 하나. 쪽수를 남기려면 <cite>p. 00</cite>를 p 뒤에 넣는다 -->
+      <blockquote class="quote"><p>{{인용문}}</p></blockquote>
+    </div>
+  </main>
+  <footer class="site-footer">naelog · book</footer>
+  <script src="../../assets/edit.js"></script>
+</body>
+</html>

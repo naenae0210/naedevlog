@@ -1,0 +1,115 @@
+---
+// 홈(전체 글)과 로그별 목록이 같이 쓰는 화면. log 를 넘기면 그 로그의 글만 보인다.
+// lang="en" 이면 영어판 목록(/en/, /en/<log>/)이다.
+import { getPosts } from '../posts';
+import { LOGS, SITE, SITE_EN, logOf } from '../logs';
+interface Props { log?: string; lang?: 'ko' | 'en' }
+const { log, lang = 'ko' } = Astro.props;
+const en = lang === 'en';
+const current = log ? logOf(log) : null;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const home = en ? `${base}en/` : base;
+// 영어 목록: 영어판이 있는 로그(dev)는 영어 글, 나머지는 한국어 글을 보여 준다.
+const all = en
+  ? [...getPosts('en'), ...getPosts('ko').filter((p) => !logOf(p.log).enPosts)].sort((a, b) => b.date.localeCompare(a.date))
+  : getPosts();
+const posts = all.filter((p) => !log || p.log === log);
+const hrefOf = (p: { lang: string; slug: string }) => `${base}${p.lang === 'en' ? 'en/' : ''}posts/${p.slug}/`;
+const info = en ? (current?.en ?? SITE_EN) : (current ?? SITE);
+const nav = LOGS.map((l) => ({ href: `${home}${l.id}/`, name: l.name, current: l.id === log }));
+// 같은 목록의 다른 언어판
+const path = log ? `${log}/` : '';
+const alt = en ? { lang: 'ko', href: `${base}${path}` } : { lang: 'en', href: `${base}en/${path}` };
+const categories = [...new Set(posts.map((p) => p.category))];
+const fmtDate = (d: string) => d.replaceAll('-', '.');
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{current ? `${current.name} · ${SITE.name}` : SITE.name}</title>
+  <meta name="description" content={info.intro || info.heading} />
+  <link rel="alternate" hreflang={alt.lang} href={alt.href} />
+  <link rel="stylesheet" href={`${base}assets/naedevlog.css`} />
+  <script is:inline src={`${base}assets/site.js`}></script>
+  <style>
+    .intro { padding: 24px 0 48px; }
+    .intro h1 { font-size: clamp(30px, 4.4vw, 40px); margin-bottom: 12px; }
+    .intro p { color: var(--sub); font-size: 18px; margin: 0; }
+
+    .cats { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+    .cat { cursor: pointer; border: 0; background: var(--surface-2); color: var(--sub); font: 600 13px var(--font);
+      padding: 6px 12px; border-radius: 99px; }
+    .cat[aria-pressed="true"] { background: var(--text); color: var(--bg); }
+
+    .list { list-style: none; padding: 0; margin: 0; }
+    .list li { margin: 0; border-bottom: 1px solid var(--line); }
+    .list a { display: block; padding: 28px 0; color: var(--text); }
+    .list a:hover { text-decoration: none; }
+    .list a:hover .t { color: var(--blue); }
+    .c { font-size: 14px; font-weight: 700; color: var(--blue); }
+    .t { font-size: 21px; font-weight: 700; letter-spacing: -.02em; line-height: 1.45; margin: 4px 0 8px; transition: color .15s; }
+    .m { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 14px; color: var(--faint); }
+    .m .tag { font-size: 12px; padding: 1px 8px; }
+    .empty { color: var(--faint); padding: 48px 0; text-align: center; }
+    [hidden] { display: none !important; }
+    @media (max-width: 600px) { .t { font-size: 19px; } .list a { padding: 22px 0; } }
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="inner">
+    <a class="logo" href={home}>{SITE.name}</a>
+    <nav class="nav">
+      {nav.map((l) => <a href={l.href} aria-current={l.current ? 'page' : undefined}>{l.name}</a>)}
+    </nav>
+  </div></header>
+
+  <main class="wrap">
+    <section class="intro">
+      <h1>{info.heading}</h1>
+      {info.intro && <p>{info.intro}</p>}
+    </section>
+
+    {categories.length > 1 && (
+      <div class="cats">
+        <button class="cat" data-cat="all" aria-pressed="true">{en ? 'All topics' : '모든 주제'}</button>
+        {categories.map((c) => <button class="cat" data-cat={c} aria-pressed="false">{c}</button>)}
+      </div>
+    )}
+
+    <ul class="list">
+      {posts.map((p) => (
+        <li data-cat={p.category}>
+          <a href={hrefOf(p)}>
+            <div class="c">{current ? p.category : `${logOf(p.log).name} · ${p.category}`}</div>
+            <div class="t">{p.title}</div>
+            <div class="m">
+              <span>{fmtDate(p.date)}</span>
+              {p.tags.map((t) => <span class="tag">{t}</span>)}
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="empty" hidden>{en ? 'No posts yet.' : '아직 글이 없다.'}</p>
+  </main>
+  <footer class="site-footer">{SITE.name} · {info.intro || info.heading}</footer>
+
+  <script>
+    let cat = 'all';
+    const apply = () => {
+      let n = 0;
+      document.querySelectorAll<HTMLElement>('.list li').forEach((li) => {
+        const show = cat === 'all' || li.dataset.cat === cat;
+        li.hidden = !show; if (show) n++;
+      });
+      document.querySelector<HTMLElement>('.empty')!.hidden = n > 0;
+    };
+    document.querySelectorAll<HTMLButtonElement>('.cat').forEach((b, _, all) => b.addEventListener('click', () => {
+      all.forEach((x) => x.setAttribute('aria-pressed', String(x === b))); cat = b.dataset.cat!; apply();
+    }));
+    apply();
+  </script>
+</body>
+</html>

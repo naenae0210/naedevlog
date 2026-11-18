@@ -1,0 +1,7 @@
+---
+// /en/dev/, /en/book/, /en/scrap/ : 영어 로그별 글 목록
+import Home from '../../components/Home.astro';
+import { LOGS } from '../../logs';
+export const getStaticPaths = () => LOGS.map((l) => ({ params: { log: l.id } }));
+---
+<Home lang="en" log={Astro.params.log} />
