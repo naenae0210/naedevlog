@@ -65,7 +65,7 @@ Astro 정적 사이트이고 GitHub Pages로 배포한다. 저장소 이름은 `
 ## 영어판 (dev만)
 
 - dev 글을 쓰면 영어판을 `public/en/posts/<같은 slug>/index.html`에 같이 만든다. book, scrap은 영어판을 만들지 않는다.
-- book은 대신 `<meta name="naelog:translate" content="google" />`를 둔다. site.js가 Google 번역으로 여는 EN 링크를 단다. scrap은 아무것도 달지 않는다.
+- book, scrap 글에는 EN 링크를 달지 않는다. Google 번역 링크(translate.goog)는 지역에 따라 막혀서 쓰지 않는다.
 - 구조, 숫자, 그림, 계산기는 한국어판과 똑같이 두고 글자만 옮긴다. SVG 안 글자가 길어지면 좌표만 조정한다.
 - `<html lang="en">`, 경로는 `../../../assets/...`. 헤더는 로고가 `../../`(영어 목록), nav는 `../../dev/`, `../../book/`, `../../scrap/`(영어 목록)이다.
 - 두 파일이 서로 가리키게 한다. 한국어판에 `<link rel="alternate" hreflang="en" href="../../en/posts/<slug>/" />`, 영어판에 `<link rel="alternate" hreflang="ko" href="../../../posts/<slug>/" />`.

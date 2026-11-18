@@ -19,7 +19,7 @@ export const LOGS: LogInfo[] = [
 ];
 
 // /en/ 이 영어 전체 목록, /en/<id>/ 가 로그별 목록이다. 세 로그 모두 보인다.
-// 글의 영어판은 dev 만 있다. book 글은 Google 번역 링크를 단다(site.js, <meta name="naelog:translate">).
+// 글의 영어판은 dev 만 있다. book, scrap 글에는 EN 링크가 없다.
 export const SITE_EN = {
   name: 'naelog',
   heading: 'Learning, reading, and keeping notes',

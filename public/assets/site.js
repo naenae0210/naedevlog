@@ -1,8 +1,6 @@
 /* naelog 공통 스크립트. <head>에서 불러야 화면이 뜨기 전에 테마가 정해진다.
    테마: 저장한 값이 있으면 그걸, 없으면 OS 설정을 따른다. 헤더에 토글 버튼을 단다.
-   언어: <link rel="alternate" hreflang="..."> 가 있으면 헤더에 그 언어로 가는 링크를 단다.
-         영어판이 없고 <meta name="naelog:translate" content="google"> 이 있으면 Google 번역으로 여는 EN 링크를 단다.
-         (Google 번역은 배포된 공개 주소에서만 동작한다. localhost 는 열지 못한다) */
+   언어: <link rel="alternate" hreflang="..."> 가 있으면 헤더에 그 언어로 가는 링크를 단다. */
 (function () {
   const KEY = 'naelog-theme';
   const root = document.documentElement;
@@ -28,14 +26,6 @@
       a.href = alt.getAttribute('href');
       a.hreflang = alt.hreflang;
       a.textContent = alt.hreflang === 'en' ? 'EN' : '한국어';
-      tools.append(a);
-    } else if (document.querySelector('meta[name="naelog:translate"][content="google"]')) {
-      const a = document.createElement('a');
-      a.href = 'https://translate.google.com/translate?sl=ko&tl=en&u=' + encodeURIComponent(location.href);
-      a.target = '_blank';
-      a.rel = 'noopener';
-      a.title = 'Google Translate';
-      a.textContent = 'EN';
       tools.append(a);
     }
 
